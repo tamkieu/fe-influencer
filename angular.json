@@ -2,6 +2,9 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "api-client": "libs/api-client",
+    "authenticate": "libs/authenticate",
+    "helpers": "libs/helpers",
     "influencer": "apps/influencer",
     "influencer-e2e": "apps/influencer-e2e"
   }

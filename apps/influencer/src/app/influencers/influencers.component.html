@@ -1,0 +1,127 @@
+<div class="influencers">
+    <div class="heading">
+        <div class="container-fluid">
+            <div fxLayout>
+                <div class="info-influencer" fxFlex>
+                    <div class="eyebrow-banner">
+                        <div fxLayout fxLayoutGap="16px">
+                            <div class="title">
+                                <h1>Influencers</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="influencer-amazing" fxLayoutAlign="end">
+                    <object type="image/svg+xml" data="assets/images/space-robot-animation.svg" alt="space animation robot" width="100%"></object>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="influencer-content">
+        <div class="container-fluid">
+            <div class="main-content p-3">
+              <div *ngIf="($isLogged|async); else: emtyLogin">
+                <div *ngIf="(loaded$ | async)">
+                  <nz-table [formGroup]="formInfluencer" #editRowTable nzBordered [nzData]="allInfluencers">
+                    <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th [nzWidth]="'200px'">Name</th>
+                      <th>Status</th>
+                      <th *ifRoles="['ADMIN']">Email</th>
+                      <th *ifRoles="['ADMIN']">Phone</th>
+                      <th>Birthday</th>
+                      <th>Marital status</th>
+                      <th>Gender</th>
+                      <th>Created</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody formArrayName="influencers">
+                    <ng-container *ngFor="let data of itemInfluencer.controls; let i=index">
+                      <tr class="editable-row" [formGroupName]="i" (dblclick)="editItem(data.value?.id)">
+                        <td>{{data.value?.id}}</td>
+                        <td>
+                          <nz-form-control>
+                            <input (keyup.enter)="submitForm(i)" [readonly]="editId !== data?.value?.id"
+                                   (dblclick)="name.select()"
+                                   #name type="text" nz-input nzHasFeedback formControlName="name"
+                            />
+                          </nz-form-control>
+                        </td>
+                        <td>
+                          <div *ngIf="editId !== data?.value?.id">{{ data.value?.status }}</div>
+                          <nz-form-control *ngIf="editId === data?.value?.id">
+                            <nz-select nzHasFeedback formControlName="status">
+                              <nz-option *ngFor="let status of statusEnum | keyvalue" nzValue="{{status.value}}" nzLabel="{{status.key}}"></nz-option>
+                            </nz-select>
+                          </nz-form-control>
+                        </td>
+                        <td *ifRoles="['ADMIN']">
+                          <nz-form-control>
+                            <input (keyup.enter)="submitForm(i)" [readonly]="editId !== data?.value?.id"
+                                   (dblclick)="email.select()"
+                                   #email type="text" nz-input nzHasFeedback formControlName="email"
+                            />
+                          </nz-form-control>
+                        </td>
+                        <td *ifRoles="['ADMIN']">
+                          <nz-form-control>
+                            <input (keyup.enter)="submitForm(i)" [readonly]="editId !== data?.value?.id"
+                                   (dblclick)="phone.select()"
+                                   #phone type="text" nz-input nzHasFeedback formControlName="phone"
+                            />
+                          </nz-form-control>
+                        </td>
+                        <td>
+                          <div *ngIf="editId !== data?.value?.id">
+                            {{ data.value?.birthday | date: 'dd-MM-YYYY' }}
+                          </div>
+                          <nz-date-picker *ngIf="editId === data?.value?.id" formControlName="birthday"></nz-date-picker>
+                        </td>
+                        <td>
+                          <div *ngIf="editId !== data?.value?.id">{{ data.value?.maritalStatus }}</div>
+                          <nz-select *ngIf="editId === data?.value?.id" formControlName="maritalStatus">
+                            <nz-option *ngFor="let maritalStatus of maritalStatusEnum | keyvalue"
+                                       nzValue="{{maritalStatus.value}}" nzLabel="{{maritalStatus.key}}"></nz-option>
+                          </nz-select>
+                        </td>
+                        <td>
+                          <div *ngIf="editId !== data?.value?.id">{{ data.value?.gender }}</div>
+                          <nz-select *ngIf="editId === data?.value?.id" formControlName="gender">
+                            <nz-option *ngFor="let gender of genderEnum | keyvalue" nzValue="{{gender.value}}" nzLabel="{{gender.key}}"></nz-option>
+                          </nz-select>
+                        </td>
+                        <td>{{ data.value?.created_at | date: 'dd-MM-YYYY' }}</td>
+                        <td>
+                          <div fxLayout fxLayoutGap="10px">
+                            <button *ngIf="editId === data?.value?.id" (click)="submitForm(i)" [nzLoading]="isLoading" nz-button
+                                    nzType="primary" nzSize="small" nzShape="circle">
+                              <span nz-icon nzType="check" nzTheme="outline"></span>
+                            </button>
+                            <a fxFlexAlign="center" nz-popconfirm nzOkText="OK" nzCancelText="Cancel"
+                               nzPopconfirmTitle="Sure to delete?"
+                               (nzOnConfirm)="deleteRow(data.value?.id, i)">Delete</a>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-container>
+                    </tbody>
+                  </nz-table>
+                  <div class="btn-action">
+                    <button nz-button [disabled]="this.itemInfluencer.invalid" (click)="addInfluencer()" nzType="primary">Add</button>
+                  </div>
+                </div>
+              </div>
+              <ng-template #emtyLogin>
+                <nz-result nzStatus="warning" nzTitle="You need to login to view this content!">
+                  <div nz-result-extra>
+                    <button routerLink="/auth/login" nz-button nzType="primary">Sign in</button>
+                  </div>
+                </nz-result>
+              </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

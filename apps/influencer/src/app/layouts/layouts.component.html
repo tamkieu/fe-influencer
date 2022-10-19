@@ -1,0 +1,58 @@
+<nz-layout>
+    <nz-header class="header" [class]="headerMode">
+        <div class="container-fluid">
+            <div class="main-header">
+                <div fxLayout>
+                    <div class="hd-left" fxFlex>
+                        <div fxLayout fxLayoutGap="20px">
+                            <div class="logo" fxFlexAlign="center">
+                                <a href="/"><img src="assets/images/logo.png" alt="Logo" class="img-fluid" /></a>
+                            </div>
+                            <div fxFlex class="menus">
+                                <ul nz-menu nzMode="horizontal" class="main-menu">
+                                    <li class="menu-item" nz-menu-item>
+                                      Influencers
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hd-right" fxLayoutAlign="end">
+                        <div fxLayout fxLayoutGap="16px">
+                            <div class="account" fxFlexAlign="center" *ngIf="($isLogged|async) && userProfile; else: auth">
+                              <div fxLayout fxLayoutGap="16px">
+                                <button class="action" nz-button nz-dropdown nzTrigger="click"
+                                        [nzPlacement]="'bottomRight'"
+                                        [nzDropdownMenu]="menu" fxFlexAlign="center" nzType="text">
+                                  {{userProfile.name}}
+                                </button>
+
+                                <nz-dropdown-menu #menu="nzDropdownMenu">
+                                  <ul nz-menu>
+                                    <li nz-menu-item (click)="logOut()">Logout</li>
+                                  </ul>
+                                </nz-dropdown-menu>
+                              </div>
+                            </div>
+                            <ng-template #auth>
+                              <div class="account">
+                                <div fxLayout fxLayoutGap="16px">
+                                  <div class="action signIn" routerLink="/auth/login" fxFlexAlign="center">Sign in</div>
+                                  <div class="action signUp">
+                                    <button routerLink="/auth/register" nz-button nzType="default">Sign up</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nz-header>
+    <nz-content [class]="headerMode">
+        <div class="inner-content">
+            <router-outlet></router-outlet>
+        </div>
+    </nz-content>
+</nz-layout>

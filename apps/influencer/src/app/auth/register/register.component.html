@@ -1,0 +1,43 @@
+<div class="heading">
+    <h1>Sign Up</h1>
+</div>
+<form nz-form [formGroup]="authForm" class="login-form" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Full name!">
+        <nz-input-group nzPrefixIcon="user">
+          <input type="text" autocomplete="disabled" nzHasFeedback nz-input formControlName="name" placeholder="Full name" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your Email!">
+            <nz-input-group nzPrefixIcon="mail">
+                <input type="text" autocomplete="disabled" nzHasFeedback nz-input formControlName="email" placeholder="Email" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your Password!">
+            <nz-input-group nzPrefixIcon="lock">
+                <input type="password" nz-input nzHasFeedback formControlName="password" placeholder="Password" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Confirm Password!">
+        <nz-input-group nzPrefixIcon="lock">
+          <input type="password" nz-input nzHasFeedback formControlName="cfPassword" placeholder="Confirm Password" />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Confirm Password!">
+        <nz-select nzHasFeedback formControlName="role">
+          <nz-option *ngFor="let role of userRoles | keyvalue" nzValue="{{role.value}}" nzLabel="{{role.key}}"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+    <button nz-button [disabled]="isLoading" (click)="submitForm()" class="login-form-button login-form-margin" [nzType]="'primary'">Sign up</button>
+    Or
+    <a routerLink="/auth/login">Sign in!</a>
+</form>

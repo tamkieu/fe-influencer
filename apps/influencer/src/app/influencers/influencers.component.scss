@@ -1,0 +1,52 @@
+.info-influencer {
+  position: relative;
+  .eyebrow-banner {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+.influencers {
+  .heading {
+    padding-top: 35px;
+    background: #040d21 url('/assets/images/hero-glow.svg') center center no-repeat;
+    background-size: 100% auto;
+    color: #fff;
+    padding-bottom: 100px;
+    h1 {
+      color: #fff;
+      font-size: 24px;
+    }
+  }
+}
+.influencer-content {
+  margin-top: -90px;
+  .main-content {
+    background-color: #ffffff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    min-height: 200px;
+  }
+  .editable-cell {
+    position: relative;
+    padding: 5px 12px;
+    cursor: pointer;
+  }
+  .editable-row:hover .editable-cell {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px;
+  }
+}
+.btn-action {
+  position: relative;
+  top: -50px;
+}
+::ng-deep {
+  .ant-input[readonly] {
+    border: 1px solid transparent;
+    background: transparent;
+    outline: none;
+    box-shadow: none;
+  }
+}

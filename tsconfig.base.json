@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@env/*": ["apps/influencer/src/environments/*"],
+      "@influencer/api-client": ["libs/api-client/src/index.ts"],
+      "@influencer/authenticate": ["libs/authenticate/src/index.ts"],
+      "@influencer/helpers": ["libs/helpers/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

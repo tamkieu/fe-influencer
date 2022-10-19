@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  apiClient: 'http://cms.influencer.com'
 };
 
 /*

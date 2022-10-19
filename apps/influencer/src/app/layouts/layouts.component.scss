@@ -1,0 +1,78 @@
+
+.header {
+  padding: 0;
+  background: transparent;
+  height: auto;
+  line-height: normal;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  &.page-inline {
+    background: #040d21 url('/assets/images/hero-glow.svg') center center no-repeat;
+    background-size: 100% auto;
+  }
+}
+.page-inline {
+  .inner-content {
+    padding-top: 100px;
+  }
+}
+.main-header {
+  padding: 15px 0;
+  .logo {
+    width: 32px;
+  }
+  .account {
+    .action {
+      font-weight: 500;
+      color: #fff;
+    }
+    .signIn {
+      cursor: pointer;
+    }
+    .signUp {
+      button {
+        background: transparent;
+        border-radius: 6px;
+        color: #fff;
+        border: 1px solid #fff;
+      }
+    }
+  }
+  .main-menu {
+    background: transparent;
+    border: none;
+    .menu-item {
+      line-height: 35px;
+      font-weight: 500;
+      color: #fff;
+    }
+  }
+  .input-search {
+    padding: 6px 15px;
+    border-radius: 6px;
+    background: transparent;
+    font-weight: 500;
+    color: #fff;
+  }
+  .btn-search {
+    border-radius: 4px !important;
+    height: 20px;
+    width: 20px;
+    min-width: auto;
+    padding: 0;
+    line-height: normal;
+    font-size: 10px;
+    background: transparent;
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    color: #fff !important;
+  }
+}
+::ng-deep {
+  .influencer-all .ant-input-search>.ant-input-group>.ant-input-group-addon:last-child {
+    left: 0 !important;
+    width: 0;
+  }
+}
