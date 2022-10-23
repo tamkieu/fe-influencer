@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, of } from 'rxjs';
-import {User} from "@influencer/api-client";
+import {LoginRes, User} from "@influencer/api-client";
 
 export interface Credentials {
   // Customize received credentials here
@@ -19,7 +19,7 @@ const credentialsKey = 'credentials';
   providedIn: 'root',
 })
 export class CredentialsService {
-  private _user: User | null = null;
+  private _user: LoginRes | null = null;
   private _loginName: string | null = null;
 
   constructor() {
@@ -29,12 +29,6 @@ export class CredentialsService {
         localStorage.getItem(credentialsKey);
       if (savedCredentials) {
         this._user = JSON.parse(savedCredentials);
-        const loginName =
-          sessionStorage.getItem('loginName') ||
-          localStorage.getItem('loginName');
-        if (loginName) {
-          this._loginName = JSON.parse(loginName);
-        }
       }
     } catch (e) {
       console.log(e)
@@ -42,7 +36,7 @@ export class CredentialsService {
   }
   authoritiesConstantsAdmin(): boolean {
     if (this._user != null) {
-      if (this._user.role === 'ADMIN') {
+      if (this._user.data?.role === 'ADMIN') {
         return true;
       }
     }
@@ -59,7 +53,7 @@ export class CredentialsService {
 
   getNameLogged(): string | undefined {
     if (this._user != null) {
-      return this._user.name;
+      return this._user.data?.name;
     }
     return undefined;
   }
@@ -67,7 +61,7 @@ export class CredentialsService {
    * Gets the user credentials.
    * @return The user credentials or null if the user is not authenticated.
    */
-  get credentials(): User | null {
+  get credentials(): LoginRes | null {
     return this._user;
   }
 
@@ -87,7 +81,7 @@ export class CredentialsService {
    * @param credentials The user credentials.
    * @param remember True to remember credentials across sessions.
    */
-  setCredentials(user?: User, remember?: boolean) {
+  setCredentials(user?: LoginRes, remember?: boolean) {
     this._user = user || null;
     if (user) {
       const storage = remember ? localStorage : sessionStorage;
@@ -95,7 +89,6 @@ export class CredentialsService {
     } else {
       sessionStorage.removeItem(credentialsKey);
       localStorage.removeItem(credentialsKey);
-      localStorage.removeItem('loginName');
     }
   }
 }

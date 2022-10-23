@@ -1,6 +1,7 @@
 import {Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef} from "@angular/core";
 import {Subscription} from "rxjs";
 import {RolesService} from "./roles.service";
+import {GetAccountByIdFacade} from "@influencer/api-client";
 
 @Directive({
   selector: '[ifRoles]'
@@ -18,18 +19,19 @@ export class IfRolesDirective implements OnInit, OnDestroy {
   constructor(
     private viewContainerRef: ViewContainerRef,
     private templateRef: TemplateRef<any>,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private getAccountByIdFacade: GetAccountByIdFacade
   ) {}
 
   public ngOnInit(): void {
     this.subscription.push(
-      this.rolesService.roles().subscribe(res => {
-        if (!res.roles) {
+      this.getAccountByIdFacade.allGetAccountById$.subscribe(res => {
+        if (!res.success || !res.data) {
           // Remove element from DOM
           this.viewContainerRef.clear();
         }
         // user Role are checked by a Roles mention in DOM
-        const idx = res.roles.findIndex((element) => this.ifRoles.indexOf(element) !== -1);
+        const idx = this.ifRoles.indexOf(<string>res?.data?.role);
         if (idx < 0) {
           this.viewContainerRef.clear();
         } else {

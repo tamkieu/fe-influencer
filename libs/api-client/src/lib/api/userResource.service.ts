@@ -23,6 +23,8 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 import {LoginVm} from "../model/loginVm";
 import {environment} from "@env/environment";
+import {LoginRes} from "../model/loginRes";
+import {UserReq} from "../model/userReq";
 
 
 @Injectable({
@@ -65,9 +67,9 @@ export class UserResourceService {
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public login(body: LoginVm, observe?: 'body', reportProgress?: boolean): Observable<User>;
-  public login(body: LoginVm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-  public login(body: LoginVm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+  public login(body: LoginVm, observe?: 'body', reportProgress?: boolean): Observable<LoginRes>;
+  public login(body: LoginVm, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoginRes>>;
+  public login(body: LoginVm, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoginRes>>;
   public login(body: LoginVm, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
     if (body === null || body === undefined) {
@@ -83,6 +85,7 @@ export class UserResourceService {
     const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
     if (httpHeaderAcceptSelected != undefined) {
       headers = headers.set('Accept', httpHeaderAcceptSelected);
+      headers = headers.set('Access-Control-Allow-Origin', '*');
     }
 
     // to determine the Content-Type header
@@ -92,9 +95,10 @@ export class UserResourceService {
     const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
     if (httpContentTypeSelected != undefined) {
       headers = headers.set('Content-Type', httpContentTypeSelected);
+      headers = headers.set('withCredentials', 'true');
     }
 
-    return this.httpClient.request<User>('post',`${this.basePath}/api/users/login`,
+    return this.httpClient.request<User>('post',`${this.basePath}/api/login`,
       {
         body: body,
         withCredentials: this.configuration.withCredentials,
@@ -112,10 +116,10 @@ export class UserResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createUser(body: User, observe?: 'body', reportProgress?: boolean): Observable<User>;
-    public createUser(body: User, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
-    public createUser(body: User, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
-    public createUser(body: User, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createUser(body: UserReq, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public createUser(body: UserReq, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public createUser(body: UserReq, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public createUser(body: UserReq, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createUser.');
@@ -141,7 +145,7 @@ export class UserResourceService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<User>('post',`${this.basePath}/api/users/register`,
+        return this.httpClient.request<User>('post',`${this.basePath}/api/register`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

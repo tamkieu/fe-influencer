@@ -9,20 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import {User} from "./user";
 
-export interface User {
+export interface UserReq {
   id?: number;
   name?: string;
   email?: string;
   password?: string;
+  confirm_password?: string;
   role?: User.RoleEnum;
-  created_at: Date;
-  remember: boolean;
-}
-export namespace User {
-  export type RoleEnum = 'ADMIN' | 'SALE';
-  export const RoleEnum = {
-    ADMIN: 'ADMIN' as RoleEnum,
-    SALE: 'SALE' as RoleEnum
-  };
 }

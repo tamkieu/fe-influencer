@@ -9,17 +9,20 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import {ApiRs} from "./apiRs";
 
-export interface User {
-  id?: number;
-  name?: string;
-  email?: string;
-  password?: string;
-  role?: User.RoleEnum;
-  created_at: Date;
-  remember: boolean;
+export interface LoginRes extends ApiRs{
+  data?: DataLogin;
 }
-export namespace User {
+export interface DataLogin {
+  token: string;
+  name: string;
+  email: string;
+  id: number;
+  role: LoginRes.RoleEnum;
+}
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace LoginRes {
   export type RoleEnum = 'ADMIN' | 'SALE';
   export const RoleEnum = {
     ADMIN: 'ADMIN' as RoleEnum,

@@ -23,12 +23,12 @@ export const getAllInfluencersError = createSelector(
 
 export const getAllAllInfluencers = createSelector(
   getAllInfluencersState,
-  (state: AllInfluencersState) => selectAll(state)
+  (state: AllInfluencersState) => (state)
 );
 
 export const getAllInfluencersEntities = createSelector(
   getAllInfluencersState,
-  (state: AllInfluencersState) => selectEntities(state)
+  (state: AllInfluencersState) => (state)
 );
 
 export const getSelectedId = createSelector(
@@ -39,5 +39,5 @@ export const getSelectedId = createSelector(
 export const getSelected = createSelector(
   getAllInfluencersEntities,
   getSelectedId,
-  (entities, selectedId) => (selectedId ? entities[selectedId] : undefined)
+  (entities, selectedId) => (selectedId ? entities : undefined)
 );

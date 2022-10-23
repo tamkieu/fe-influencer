@@ -35,7 +35,7 @@
                       <th>Marital status</th>
                       <th>Gender</th>
                       <th>Created</th>
-                      <th></th>
+                      <th *ifRoles="['ADMIN']"></th>
                     </tr>
                     </thead>
                     <tbody formArrayName="influencers">
@@ -78,7 +78,7 @@
                           <div *ngIf="editId !== data?.value?.id">
                             {{ data.value?.birthday | date: 'dd-MM-YYYY' }}
                           </div>
-                          <nz-date-picker *ngIf="editId === data?.value?.id" formControlName="birthday"></nz-date-picker>
+                          <nz-date-picker  *ngIf="editId === data?.value?.id" formControlName="birthday"></nz-date-picker>
                         </td>
                         <td>
                           <div *ngIf="editId !== data?.value?.id">{{ data.value?.maritalStatus }}</div>
@@ -94,7 +94,7 @@
                           </nz-select>
                         </td>
                         <td>{{ data.value?.created_at | date: 'dd-MM-YYYY' }}</td>
-                        <td>
+                        <td *ifRoles="['ADMIN']">
                           <div fxLayout fxLayoutGap="10px">
                             <button *ngIf="editId === data?.value?.id" (click)="submitForm(i)" [nzLoading]="isLoading" nz-button
                                     nzType="primary" nzSize="small" nzShape="circle">
@@ -109,7 +109,7 @@
                     </ng-container>
                     </tbody>
                   </nz-table>
-                  <div class="btn-action">
+                  <div class="btn-action" *ifRoles="['ADMIN']">
                     <button nz-button [disabled]="this.itemInfluencer.invalid" (click)="addInfluencer()" nzType="primary">Add</button>
                   </div>
                 </div>

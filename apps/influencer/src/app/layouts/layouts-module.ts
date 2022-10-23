@@ -9,6 +9,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {RouterLink, RouterOutlet} from "@angular/router";
 import {TranslateModule} from "@ngx-translate/core";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
+import {ApiClientModule} from "@influencer/api-client";
 
 
 
@@ -29,7 +30,8 @@ import {NzDropDownModule} from "ng-zorro-antd/dropdown";
         NzInputModule,
         RouterOutlet,
         RouterLink,
-        NzDropDownModule
+        NzDropDownModule,
+        ApiClientModule
     ]
 })
 export class LayoutsModule { }

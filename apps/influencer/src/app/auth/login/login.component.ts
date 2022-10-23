@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
-import {UserResourceService} from "@influencer/api-client";
+import {GetAccountByIdFacade, UserResourceService} from "@influencer/api-client";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {AuthenticateService} from "@influencer/authenticate";
 import {Router} from "@angular/router";
@@ -12,7 +12,6 @@ import {NzModalService} from "ng-zorro-antd/modal";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   authForm!: FormGroup;
   isLoading!: boolean;
 
@@ -22,7 +21,8 @@ export class LoginComponent implements OnInit {
     private message: NzMessageService,
     private authenticateService: AuthenticateService,
     private router: Router,
-    private modal: NzModalService
+    private modal: NzModalService,
+
   ) {
     this.createForm();
   }
@@ -31,18 +31,14 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.userResourceService.login({
         email: this.authForm.controls['username'].value,
-        password: this.authForm.controls['password'].value,
-        remember: this.authForm.controls['rememberMe'].value
+        password: this.authForm.controls['password'].value
       }).subscribe(
         (authenticate) => {
           this.isLoading = false;
-          if (authenticate && authenticate.id) {
+          if (authenticate?.success) {
             this.message.create('success', `Login success!`);
             this.authenticateService
-              .storeAuthenticationToken({
-                ...authenticate,
-                remember: this.authForm.controls['rememberMe'].value
-              })
+              .storeAuthenticationToken(authenticate, this.authForm.controls['rememberMe'].value)
               .subscribe((_) => {
                 this.router.navigate(['']);
               });

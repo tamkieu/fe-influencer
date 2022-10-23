@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import {Influencer} from "../model/influencer";
+import {InfluencerRes} from "../model/influencer";
 
 export const initAllInfluencers = createAction(
   '[AllInfluencers Page] Init',
@@ -8,7 +8,7 @@ export const initAllInfluencers = createAction(
 
 export const loadAllInfluencersSuccess = createAction(
   '[AllInfluencers/API] Load AllInfluencers Success',
-  props<{ allInfluencers: Influencer[] }>()
+  props<{ allInfluencers: InfluencerRes }>()
 );
 
 export const loadAllInfluencersFailure = createAction(

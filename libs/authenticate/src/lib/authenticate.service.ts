@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CredentialsService } from './credentials.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
+import {LoginRes} from "@influencer/api-client";
 
 @Injectable({
   providedIn: 'root',
@@ -38,8 +39,8 @@ export class AuthenticateService {
     return this.credentialsService.authoritiesConstantsAdmin();
   }
 
-  storeAuthenticationToken(data: any): Observable<boolean> {
-    this.credentialsService.setCredentials(data, data.remember);
+  storeAuthenticationToken(data: LoginRes, remember: boolean): Observable<boolean> {
+    this.credentialsService.setCredentials(data, remember);
     this.authenticationAsOb.next(true);
     return of(true);
   }

@@ -6,12 +6,12 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Credentials} from "@influencer/authenticate";
+import {LoginRes} from "@influencer/api-client";
 const credentialsKey = 'credentials';
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
-  private _credentials: Credentials | null = null;
+  private _credentials: LoginRes | null = null;
 
   intercept(
     request: HttpRequest<any>,
@@ -25,7 +25,7 @@ export class BasicAuthInterceptor implements HttpInterceptor {
       this._credentials = JSON.parse(savedCredentials);
       request = request.clone({
         setHeaders: {
-          // Authorization: `Bearer ${this._credentials?.token}`,
+          Authorization: `Bearer ${this._credentials?.data?.token}`,
         },
       });
     }

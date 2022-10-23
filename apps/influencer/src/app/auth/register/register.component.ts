@@ -33,11 +33,11 @@ export class RegisterComponent implements OnInit {
     this.authForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$')]],
       name: ['', Validators.required],
-      role: ['USER', Validators.required],
+      role: ['SALE', Validators.required],
       password: ['', Validators.required],
-      cfPassword: ['', Validators.required],
+      confirm_password: ['', Validators.required],
     }, {
-        validators: MustMatch('password', 'cfPassword'),
+        validators: MustMatch('password', 'confirm_password'),
       });
   }
 

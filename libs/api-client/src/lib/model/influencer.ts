@@ -9,7 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
+import {ApiRs} from "./apiRs";
+export interface InfluencerRes extends ApiRs {
+  data?: Array<Influencer>;
+}
 export interface Influencer {
     id?: number;
     name?: string;

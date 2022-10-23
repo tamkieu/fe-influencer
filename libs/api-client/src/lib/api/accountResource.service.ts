@@ -1,6 +1,6 @@
 /**
- * Influencer API
- * Influencer API documentation
+ * User API
+ * User API documentation
  *
  * OpenAPI spec version: 0.0.1
  *
@@ -17,18 +17,22 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import {Influencer, InfluencerRes} from '../model/influencer';
+import { User } from '../model/user';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
+import {LoginVm} from "../model/loginVm";
+import {environment} from "@env/environment";
+import {LoginRes} from "../model/loginRes";
+import {AccountRes, AllAccountRes} from "../model/accountRes";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class InfluencerResourceService {
+export class AccountResourceService {
 
-    protected basePath = 'http://localhost:8081';
+    protected basePath = environment.apiClient;
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -56,94 +60,6 @@ export class InfluencerResourceService {
         return false;
     }
 
-
-    /**
-     *
-     *
-     * @param body
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public createInfluencer(body: Influencer, observe?: 'body', reportProgress?: boolean): Observable<Influencer>;
-    public createInfluencer(body: Influencer, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Influencer>>;
-    public createInfluencer(body: Influencer, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Influencer>>;
-    public createInfluencer(body: Influencer, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling createInfluencer.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            '*/*'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<Influencer>('post',`${this.basePath}/api/influencers`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     *
-     *
-     * @param id
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteInfluencer(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteInfluencer(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteInfluencer(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteInfluencer(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteInfluencer.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<any>('delete',`${this.basePath}/api/influencers/${encodeURIComponent(String(id))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
     /**
      *
      *
@@ -153,10 +69,10 @@ export class InfluencerResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAllInfluencers(page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<InfluencerRes>;
-    public getAllInfluencers(page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<InfluencerRes>>;
-    public getAllInfluencers(page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<InfluencerRes>>;
-    public getAllInfluencers(page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getAllAccounts(page?: number, size?: number, sort?: Array<string>, observe?: 'body', reportProgress?: boolean): Observable<AllAccountRes>;
+    public getAllAccounts(page?: number, size?: number, sort?: Array<string>, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AllAccountRes>>;
+    public getAllAccounts(page?: number, size?: number, sort?: Array<string>, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AllAccountRes>>;
+    public getAllAccounts(page?: number, size?: number, sort?: Array<string>, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
 
@@ -193,7 +109,7 @@ export class InfluencerResourceService {
         if (httpContentTypeSelected !== undefined) {
           headers = headers.set('content-type', httpContentTypeSelected);
         }
-        return this.httpClient.request<Array<Influencer>>('get',`${this.basePath}/api/influencers`,
+        return this.httpClient.request<Array<User>>('get',`${this.basePath}/api/user`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -211,14 +127,10 @@ export class InfluencerResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getInfluencer(id: number, observe?: 'body', reportProgress?: boolean): Observable<Influencer>;
-    public getInfluencer(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Influencer>>;
-    public getInfluencer(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Influencer>>;
-    public getInfluencer(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getInfluencer.');
-        }
+    public getAccount(observe?: 'body', reportProgress?: boolean): Observable<AccountRes>;
+    public getAccount(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<AccountRes>>;
+    public getAccount(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<AccountRes>>;
+    public getAccount(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -235,7 +147,7 @@ export class InfluencerResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Influencer>('get',`${this.basePath}/api/influencers/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<User>('get',`${this.basePath}/api/account/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -253,17 +165,17 @@ export class InfluencerResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public partialUpdateInfluencer(body: Influencer, id: number, observe?: 'body', reportProgress?: boolean): Observable<Influencer>;
-    public partialUpdateInfluencer(body: Influencer, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Influencer>>;
-    public partialUpdateInfluencer(body: Influencer, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Influencer>>;
-    public partialUpdateInfluencer(body: Influencer, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public partialUpdateUser(body: User, id: number, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public partialUpdateUser(body: User, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public partialUpdateUser(body: User, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public partialUpdateUser(body: User, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling partialUpdateInfluencer.');
+            throw new Error('Required parameter body was null or undefined when calling partialUpdateUser.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling partialUpdateInfluencer.');
+            throw new Error('Required parameter id was null or undefined when calling partialUpdateUser.');
         }
 
         let headers = this.defaultHeaders;
@@ -287,7 +199,7 @@ export class InfluencerResourceService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Influencer>('patch',`${this.basePath}/api/influencers/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<User>('patch',`${this.basePath}/api/user/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -306,17 +218,17 @@ export class InfluencerResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateInfluencer(body: Influencer, id: number, observe?: 'body', reportProgress?: boolean): Observable<Influencer>;
-    public updateInfluencer(body: Influencer, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Influencer>>;
-    public updateInfluencer(body: Influencer, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Influencer>>;
-    public updateInfluencer(body: Influencer, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUser(body: User, id: number, observe?: 'body', reportProgress?: boolean): Observable<User>;
+    public updateUser(body: User, id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<User>>;
+    public updateUser(body: User, id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<User>>;
+    public updateUser(body: User, id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling updateInfluencer.');
+            throw new Error('Required parameter body was null or undefined when calling updateUser.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateInfluencer.');
+            throw new Error('Required parameter id was null or undefined when calling updateUser.');
         }
 
         let headers = this.defaultHeaders;
@@ -339,7 +251,7 @@ export class InfluencerResourceService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Influencer>('put',`${this.basePath}/api/influencers/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<User>('put',`${this.basePath}/api/user/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

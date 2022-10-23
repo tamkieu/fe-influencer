@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiClient: 'http://cms.influencer.com'
+  apiClient: 'http://cms.vinplus.vn'
 };
 
 /*

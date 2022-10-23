@@ -8,6 +8,7 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angul
 import {Subscription} from "rxjs";
 import {AuthenticateService} from "@influencer/authenticate";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'influencer-influencers',
@@ -34,15 +35,19 @@ export class InfluencersComponent implements OnInit, OnDestroy {
     private message: NzMessageService,
   ) {
     this.createFormInfluencer();
-    this.allInfluencersFacade.init(DEFAULT_PAGINATION_PAGE, DEFAULT_PAGINATION_OFFSET);
+    if(this.authenticateService.isAuthenticated()) {
+      this.allInfluencersFacade.init(DEFAULT_PAGINATION_PAGE, DEFAULT_PAGINATION_OFFSET);
+    }
   }
 
   ngOnInit(): void {
     this.subscriptions.add(
       this.allInfluencersFacade.allAllInfluencers$.subscribe(influencers => {
-        if(influencers?.length) {
-          this.allInfluencers = influencers;
-          this.parseInfluencers(influencers);
+        if(influencers?.success && influencers.data?.length) {
+          this.allInfluencers = influencers.data;
+          this.parseInfluencers(influencers.data);
+        } else {
+          this.allInfluencers = [];
         }
       })
     )
@@ -50,7 +55,10 @@ export class InfluencersComponent implements OnInit, OnDestroy {
 
   deleteRow(id: number, index?: number): void {
     if(id) {
-      this.influencerResourceService.deleteInfluencer(id).subscribe(create => this.responseInfluencer('Delete influencer'))
+      this.influencerResourceService.deleteInfluencer(id).subscribe(deleteRs => {
+        this.responseInfluencer('Delete influencer');
+        this.removeInfluencer(<number>index);
+      })
     } else if(index) {
       this.removeInfluencer(index);
     }
@@ -112,15 +120,24 @@ export class InfluencersComponent implements OnInit, OnDestroy {
   }
 
   submitForm(index: number) {
-    this.isLoading = true;
     if(this.itemInfluencer.controls[index].valid) {
+      this.isLoading = true;
       if(this.itemInfluencer.controls[index].value.id) {
+
         this.influencerResourceService.updateInfluencer(
-          this.itemInfluencer.controls[index].value, parseInt(this.itemInfluencer.controls[index].value.id)
+          {
+            ...this.itemInfluencer.controls[index].value,
+            birthday: this.itemInfluencer.controls[index].value?.birthday?
+              formatDate(this.itemInfluencer.controls[index].value?.birthday, 'yyyy-MM-dd', 'en-US'): null
+          }, parseInt(this.itemInfluencer.controls[index].value.id)
         ).subscribe(update => this.responseInfluencer('Update influencer'))
       } else {
         this.influencerResourceService.createInfluencer(
-          this.itemInfluencer.controls[index].value
+          {
+            ...this.itemInfluencer.controls[index].value,
+            birthday: this.itemInfluencer.controls[index].value?.birthday?
+              formatDate(this.itemInfluencer.controls[index].value?.birthday, 'yyyy-MM-dd', 'en-US'): null
+          }
         ).subscribe(create => this.responseInfluencer('Create influencer'))
       }
     }

@@ -13,9 +13,12 @@ import { EffectsModule } from '@ngrx/effects';
 import * as fromAllInfluencers from './all-influencers/all-influencers.reducer';
 import { AllInfluencersEffects } from './all-influencers/all-influencers.effects';
 import { AllInfluencersFacade } from './all-influencers/all-influencers.facade';
-import {BASE_PATH} from "./variables";
+import { BASE_PATH } from './variables';
 import { environment } from '@env/environment';
-import {UserResourceService} from "./api/userResource.service";
+import { UserResourceService } from './api/userResource.service';
+import * as fromGetAccountById from './get-account-by-id/get-account-by-id.reducer';
+import { GetAccountByIdEffects } from './get-account-by-id/get-account-by-id.effects';
+import { GetAccountByIdFacade } from './get-account-by-id/get-account-by-id.facade';
 
 @NgModule({
   imports: [
@@ -24,6 +27,11 @@ import {UserResourceService} from "./api/userResource.service";
       fromAllInfluencers.allInfluencersReducer
     ),
     EffectsModule.forFeature([AllInfluencersEffects]),
+    StoreModule.forFeature(
+      fromGetAccountById.GETACCOUNTBYID_FEATURE_KEY,
+      fromGetAccountById.getAccountByIdReducer
+    ),
+    EffectsModule.forFeature([GetAccountByIdEffects]),
   ],
   declarations: [],
   exports: [],
@@ -32,32 +40,9 @@ import {UserResourceService} from "./api/userResource.service";
     AllInfluencersFacade,
     UserResourceService,
     { provide: BASE_PATH, useValue: environment.apiClient },
+    GetAccountByIdFacade,
   ],
 })
 export class ApiClientModule {
-  public static forRoot(
-    configurationFactory: () => Configuration
-  ): ModuleWithProviders<ApiClientModule> {
-    return {
-      ngModule: ApiClientModule,
-      providers: [],
-    };
-  }
 
-  constructor(
-    @Optional() @SkipSelf() parentModule: ApiClientModule,
-    @Optional() http: HttpClient
-  ) {
-    if (parentModule) {
-      throw new Error(
-        'ApiModule is already loaded. Import in your base AppModule only.'
-      );
-    }
-    if (!http) {
-      throw new Error(
-        'You need to import the HttpClientModule in your AppModule! \n' +
-          'See also https://github.com/angular/angular/issues/20575'
-      );
-    }
-  }
 }
